@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% block title %}
+    Single Listing
+{% endblock  %}
+{% block content %}
+<h1>Single Listing</h1>
+<p>{{listing.title}}</p>
+<p>{{listing.description}}</p>
+{% for tag in tags %}
+<span>{{tag}}</span>
+{% endfor %}
+{% endblock  %}

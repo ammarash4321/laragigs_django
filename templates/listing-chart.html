@@ -1,0 +1,71 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+    Listing Chart
+{% endblock %}
+
+{% block content %}
+    <div id="container" style="width: 75%;">
+        <canvas id="listing-chart" data-url="{% url 'listing-chart' %}"></canvas>
+    </div>
+
+    <form action="http://localhost:8000/listing-chart/" method="POST" id="demo-form">
+        {% csrf_token %}
+        <label for="name">Name
+            <input type="text" name="name" placeholder="Name">
+        </label><br>
+        <label for="description">Description
+            <input type="text" name="description" placeholder="Description">
+        </label><br>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
+
+{% block jquery %}
+    <script>
+
+        var ctx = document.getElementById("listing-chart").getContext("2d");
+        var myChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: {{ labels | safe }},
+                datasets: [
+                    {
+                        data: {{ items | safe }},
+                        label: "Listing Created",
+                        backgroundColor: "green",
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            max: 20,
+                        }
+                    }]
+                }
+            }
+        });
+
+        // this is the id of the form
+        $("#demo-form").submit(function (e) {
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+            $.ajax({
+                type: "POST",
+                url: 'http://localhost:8000/listing-chart/',
+                data: {
+                    name: $('input[name=name]').val(),
+                    description: $('input[name=description]').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function (data) {
+                    console.log("success")
+                }
+            });
+
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+{% block title %}
+Delete Listing
+{% endblock %}
+{% block content %}
+        <main>
+            <div class="mx-4">
+                <div class="bg-gray-50 border border-gray-200 p-10 rounded max-w-lg mx-auto mt-24">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-6">
+                            <p>Are you sure you want to delete "{{ listing.title }}"?</p>
+                            <button
+                                class="bg-laravel text-white rounded py-2 px-4 hover:bg-black"
+                            >
+                                Delete Listing
+                            </button>
+
+                            <a href="{{ request.META.HTTP_REFERER }}" class="text-black ml-4"> Back </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+{% endblock %}
